@@ -1,4 +1,4 @@
-# 🌿 Borreguil · Wet Meadow Finder
+# 🌿 Borreguil - Alpine wet meadows finder
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24571286.svg)](https://doi.org/10.5281/zenodo.24571286)
 

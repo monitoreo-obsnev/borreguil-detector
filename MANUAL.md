@@ -1,4 +1,4 @@
-# Manual de usuario — Borreguil · Wet Meadow Finder
+# Manual de usuario — Borreguil - Alpine wet meadows finder
 
 Referencia completa del programa: qué hace cada opción, qué significa cada
 variable y cómo interpretar los resultados.

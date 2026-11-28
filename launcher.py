@@ -283,7 +283,7 @@ def buscar_version_nueva(res, out, mostrar=None):
     return r
 
 
-TITULO_VENTANA = f'{APP_NAME} · Wet Meadow Finder'
+TITULO_VENTANA = f'{APP_NAME} - Alpine wet meadows finder'
 
 _PAGINA = """<!doctype html><html lang="es"><head><meta charset="utf-8">
 <title>{titulo}</title><style>
@@ -303,7 +303,7 @@ def cargando(texto='Abriendo la app…'):
     del instalador de Mac), es lo único que se ve mientras tanto (27-11-2026)."""
     return _PAGINA.format(
         titulo=TITULO_VENTANA,
-        cuerpo='<h1>Borreguil · Wet Meadow Finder</h1><p>Buscador y mapa de borreguiles</p>'
+        cuerpo='<h1>Borreguil - Alpine wet meadows finder</h1><p>Buscador y mapa de borreguiles</p>'
                f'<p>{html.escape(texto)}</p>'
                # sin repetirlo si el texto ya dice lo que tarda
                + ('' if 'minuto' in texto else
@@ -675,7 +675,8 @@ def abrir_en_ventana(url: str, port: int, out: Path, probar: bool = False, busca
             except Exception:                    # noqa: BLE001
                 texto = ''
             # El Inicio (título) o, en versiones de antes, el panel lateral.
-            if 'Encuentra los borreguiles' in texto or 'Área de estudio' in texto:
+            if any(t in texto for t in ('Identifica y mapea', 'Find the alpine wet meadows',
+                                        'Encuentra los borreguiles', 'Área de estudio')):
                 resultado['estado'] = 'ok'
                 break
         ventana.destroy()
@@ -821,7 +822,7 @@ def main():
         return
 
     print('=' * 64)
-    print(f'  {APP_NAME} · Wet Meadow Finder — buscador y mapa de borreguiles')
+    print(f'  {APP_NAME} - Alpine wet meadows finder — buscador y mapa de borreguiles')
     print('=' * 64)
     if con_ventana:
         print('  La app se abre en su propia ventana.')

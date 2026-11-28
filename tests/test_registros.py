@@ -112,7 +112,7 @@ def test_compactar_junta_los_reintentos_de_googleapiclient():
 def test_recoger_sin_registros():
     with tempfile.TemporaryDirectory() as d:
         t = rg.recoger('1.2.3', donde=d)
-    assert t.startswith('Registros de Borreguil · Wet Meadow Finder 1.2.3\n')
+    assert t.startswith('Registros de Borreguil - Alpine wet meadows finder 1.2.3\n')
     assert 'Sistema: ' in t and 'Todavía no hay registros' in t
 
 
@@ -345,7 +345,7 @@ def test_la_app_tiene_enviar_los_registros():
             assert not at.exception, at.exception
             texto = at.session_state['registros_texto']
             assert 'algo pasó en ~\\Borreguil' in texto and CASA not in texto
-            assert texto.startswith('Registros de Borreguil · Wet Meadow Finder ')
+            assert texto.startswith('Registros de Borreguil - Alpine wet meadows finder ')
             import streamlit as st    # cada st.error va al registro (y con su botón)
             assert getattr(st.error, '_registra', False)
 

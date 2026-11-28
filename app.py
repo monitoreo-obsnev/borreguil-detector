@@ -442,7 +442,7 @@ def foto_inicio():
                     'Sierra Nevada, con niebla',
                     'Green alpine wet meadow with pools and a stream on the slopes of the '
                     'Veleta, Sierra Nevada, in the mist')
-    pie = i18n.pick('Borreguiles en la ladera del Veleta, Sierra Nevada · Foto: Bouke ten '
+    pie = i18n.pick('Pastos húmedos de alta montaña en la ladera del Veleta, Sierra Nevada · Foto: Bouke ten '
                     'Cate, CC BY 4.0, Wikimedia Commons',
                     'Alpine wet meadows on the slopes of the Veleta, Sierra Nevada · Photo: '
                     'Bouke ten Cate, CC BY 4.0, Wikimedia Commons')
@@ -1944,7 +1944,7 @@ def live_logs(container):
 # ============================================================
 # UI
 # ============================================================
-st.set_page_config(page_title='Borreguil · Wet Meadow Finder',
+st.set_page_config(page_title='Borreguil - Alpine wet meadows finder',
                     page_icon='🌿',
                     layout='wide',
                     initial_sidebar_state='collapsed')
@@ -2461,7 +2461,7 @@ with st.container(key='cabecera', horizontal=True, vertical_alignment='center'):
         st.html(f'<img src="{LOGO_SRC}" alt="" width="36" height="36" '
                 'style="display:block">', width='content')
         with st.container(gap=None, width='content'):
-            st.button('Borreguil · Wet Meadow Finder', key='ir_inicio', type='tertiary',
+            st.button('Borreguil - Alpine wet meadows finder', key='ir_inicio', type='tertiary',
                       on_click=ir_a, args=('inicio',))
             with st.container(key='subtitulo'):
                 st.markdown(i18n.pick('Buscador y mapa de borreguiles',
@@ -2490,7 +2490,7 @@ if st.session_state.get('_aviso_cortado') and PANTALLA in ('analizar', 'resultad
     _AVISO_CORTADO = st.container(key='aviso_cortado').empty()
     _AVISO_CORTADO.warning(i18n.pick(
         '**El último análisis no ha terminado.** Se paró antes de acabar (por ejemplo, al '
-        'cambiar algo en el panel mientras se hacía). Vuelve a pulsar «Analizar» o «Probar '
+        'cambiar algo en el panel mientras se hacía). Vuelve a pulsar «Analizar» o «Prueba '
         'un ejemplo».',
         '**The last analysis did not finish.** It stopped before the end (for instance, '
         'because something in the panel was changed while it was running). Press "Analyse" '
@@ -2626,11 +2626,12 @@ with col_panel, st.container(key='panel_analizar'):
     # pantalla, el panel pegado a la izquierda y de arriba abajo, como en la demo.
     st.html('<style>'
             + _css_caja_subir('subir_puntos',
-                              i18n.pick('Arrastra aquí tu fichero o elígelo',
+                              i18n.pick('Arrastra tu archivo aquí o selecciónalo.',
                                         'Drag your file here or choose it'),
-                              i18n.pick('KML, GeoJSON, CSV con lon y lat, o Shapefile',
+                              i18n.pick('KML, GeoJSON, CSV con longitud y latitud, o '
+                                        'Shapefile.',
                                         'KML, GeoJSON, CSV with lon and lat, or Shapefile'))
-            + _css_caja_subir('subir_campo', i18n.pick('Añadir fichero de campo',
+            + _css_caja_subir('subir_campo', i18n.pick('Añadir un archivo de puntos.',
                                                        'Add a field file'), pequena=True)
             + _css_caja_subir('area_file', i18n.pick(
                 'Arrastra tu polígono: KML, GeoJSON, GeoPackage o Shapefile (selecciona a la '
@@ -2646,10 +2647,10 @@ with col_panel, st.container(key='panel_analizar'):
     # «Tu zona» lo primero (la autora, 27-11-2026: «que lo primero que aparezca sea
     # Your area»).
     with st.container(key='seccion_zona'):
-        st.subheader(i18n.pick('Tu zona', 'Your area'))
+        st.subheader(i18n.pick('Tu zona de estudio', 'Your area'))
 
         _modos_zona = {
-            '🔤  Nombre del área protegida': i18n.pick('Un espacio protegido',
+            '🔤  Nombre del área protegida': i18n.pick('Área protegida',
                                                       'A protected area'),
             '🆔  WDPA ID (protectedplanet.net)': i18n.pick('Código WDPA', 'WDPA code'),
             '🗺  Vector (subir KML/Shp/GeoJSON)': i18n.pick('Subir un polígono',
@@ -2704,7 +2705,7 @@ with col_panel, st.container(key='panel_analizar'):
                                'Park, 71213 Picos de Europa, 893 Ordesa y Monte Perdido.'))
         elif area_mode.startswith('🔤'):
             pa_name = st.text_input(
-                i18n.pick('Nombre del espacio protegido', 'Name of the protected area'),
+                i18n.pick('Nombre del área protegida', 'Name of the protected area'),
                 placeholder='Parque Nacional de Sierra Nevada', key='nombre_zona',
                 help=i18n.pick('Búsqueda en Nominatim (OpenStreetMap). Cuanto más específico, '
                                'mejor: incluir «Parque Nacional» o «Parque Natural» suele ayudar.',
@@ -2712,7 +2713,8 @@ with col_panel, st.container(key='panel_analizar'):
                                'better: including "National Park" or "Natural Park" usually '
                                'helps.'))
         else:
-            st.caption(i18n.pick('La zona será el rectángulo que rodea a tus puntos.',
+            st.caption(i18n.pick('El área de estudio será el rectángulo que engloba todos '
+                                 'tus puntos.',
                                  'The area will be the rectangle around your points.'))
 
     with st.container(key='seccion_puntos'):
@@ -2730,9 +2732,9 @@ with col_panel, st.container(key='panel_analizar'):
             '📁  Subir archivo (KML/Shp/GeoJSON)',
             '🎲  Generar aleatoriamente en el área',
         ], index=0, label_visibility='collapsed', horizontal=True, key='origen_puntos',
-            format_func=lambda o: (i18n.pick('Subir un fichero', 'Upload a file')
+            format_func=lambda o: (i18n.pick('Subir un archivo', 'Upload a file')
                                    if o.startswith('📁') else
-                                   i18n.pick('Generar puntos al azar',
+                                   i18n.pick('Generar puntos aleatorios',
                                              'Generate random points')))
 
         f_input = None; gen_n = 0; gen_mode = 'stratified_elev'
@@ -2742,7 +2744,7 @@ with col_panel, st.container(key='panel_analizar'):
         if input_mode.startswith('📁'):
             # Varios ficheros a la vez: un Shapefile son varios (.shp, .dbf, .shx, .prj)
             f_input = st.file_uploader(
-                i18n.pick('Puntos por verificar', 'Points to be verified'),
+                i18n.pick('Puntos pendientes de verificar', 'Points to be verified'),
                 type=FORMATOS_PUNTOS,
                 accept_multiple_files=True, key='subir_puntos',
                 help=i18n.pick(
@@ -2767,7 +2769,7 @@ with col_panel, st.container(key='panel_analizar'):
                                           'Random but separated by a minimum distance'),
                 'stratified_elev': i18n.pick('Al azar, estratificados por altitud',
                                              'Random but stratified by altitude'),
-                'cuartiles': i18n.pick('Al azar por clase de probabilidad',
+                'cuartiles': i18n.pick('Al azar, por clase de probabilidad',
                                        'Random by probability class'),
             }
             gen_mode = st.selectbox(
@@ -2951,7 +2953,7 @@ with col_panel, st.container(key='panel_analizar'):
                 gen_min_elev = float(gen_min_elev_str) if gen_min_elev_str.strip() else None
                 gen_max_elev = float(gen_max_elev_str) if gen_max_elev_str.strip() else None
             gen_lejos = st.number_input(
-                i18n.pick('Lejos de tus puntos ya verificados (m)',
+                i18n.pick('A una distancia a tus puntos ya verificados (m)',
                           'Away from your already verified points (m)'),
                 min_value=0, max_value=5000, value=0, step=50,
                 help=i18n.pick(
@@ -2980,7 +2982,7 @@ with col_panel, st.container(key='panel_analizar'):
 
         st.html('<hr class="separador">')
         f_truth = st.file_uploader(
-            i18n.pick('Puntos ya verificados para la validación externa :gray[(opcional)]',
+            i18n.pick('Puntos ya verificados para validación externa :gray[(opcional)]',
                       'Points already verified for external validation :gray[(optional)]'),
             type=FORMATOS_PUNTOS, accept_multiple_files=True, key='subir_campo',
             help=i18n.pick(
@@ -3001,7 +3003,8 @@ with col_panel, st.container(key='panel_analizar'):
                 {'ok': _linea_ok, 'info': st.info, 'aviso': st.warning,
                  'falta': st.error}[_niv_et](_txt_et)
         truth_train_only = st.checkbox(
-            i18n.pick('No mostrarlos en el mapa, la tabla ni las descargas',
+            i18n.pick('No mostrar estos puntos en el mapa, en la tabla ni en los archivos '
+                      'de descarga.',
                       'Do not show them on the map, table or downloads'),
             value=False, disabled=(f_truth is None),
             help=i18n.pick(
@@ -3598,7 +3601,7 @@ def _mapa_previo(puntos, rectangulo):
         filas.append('<span>○ ' + i18n.pick(f'Tus {len(puntos)} puntos',
                                             f'Your {len(puntos)} points') + '</span>')
         if rectangulo:
-            filas.append('<span style="color:#7CC496">┄ ' + i18n.pick('Tu zona', 'Your area')
+            filas.append('<span style="color:#7CC496">┄ ' + i18n.pick('Tu zona de estudio', 'Your area')
                          + '</span>')
     if filas:                       # sin puntos, sin leyenda
         m.get_root().html.add_child(folium.Element(
@@ -3890,34 +3893,37 @@ with pant_inicio:
         # «alpine wet meadows» en vez de «borreguil» y «area» en vez de «place». El título
         # en español no cambia: el lanzador lo busca para saber que la app ya ha cargado.
         st.markdown(i18n.pick(
-            '<div class="inicio"><span class="ceja">Prados húmedos de alta montaña</span>'
-            '<h1>Encuentra los borreguiles de tu zona y haz su mapa</h1></div>',
+            '<div class="inicio"><span class="ceja">Pastos húmedos de alta montaña</span>'
+            '<h1>Identifica y mapea los pastos húmedos de alta montaña de tu zona</h1></div>',
             '<div class="inicio"><span class="ceja">Alpine wet meadows</span>'
             '<h1>Find the alpine wet meadows in your area and map them</h1></div>'),
             unsafe_allow_html=True)
         _pasos_inicio = [
             (i18n.pick('1 · Prepara tu análisis', '1 · Set your analysis'),
-             i18n.pick('Zonas o puntos, modelo y datos para obtener puntos candidatos de '
-                       'entrenamiento',
+             i18n.pick('Selecciona las áreas o puntos, el modelo y los datos para obtener '
+                       'puntos de entrenamiento',
                        'Areas/points, model and data to get candidate training points'),
-             i18n.pick('Con relieve, imágenes de satélite y aéreas, un modelo da la '
-                       'probabilidad de encontrar los distintos tipos de borreguil en muchos '
-                       'puntos.',
+             i18n.pick('A partir de datos topográficos, imágenes de satélite e imágenes '
+                       'aéreas, el modelo estima la probabilidad de presencia de distintos '
+                       'tipos de pastos húmedos de alta montaña en múltiples puntos.',
                        'With terrain, satellite and aerial imagery a model gives the '
                        'probability to find different types of alpine wet meadows in '
                        'multiple points.')),
             (i18n.pick('2 · Revisa los puntos de entrenamiento', '2 · Review the training points'),
-             i18n.pick('Confirma o corrige a la vista cada punto candidato de entrenamiento',
+             i18n.pick('Confirma o corrige visualmente cada punto de entrenamiento candidato',
                        'Visually confirm or correct each candidate training point'),
-             i18n.pick('Sobre las ortofotos, indica en cada punto si es borreguil (sí / no / '
-                       'no estoy seguro/a) y de qué tipo.',
+             i18n.pick('Sobre las ortofotografías, indica si cada punto corresponde a un '
+                       'pasto húmedo de alta montaña (sí/no/no estoy seguro) y de qué tipo se '
+                       'trata.',
                        'On the orthophotos, indicate for each point whether (yes/no/not sure) '
                        'it corresponds to alpine wet meadows and what type it is.')),
             (i18n.pick('3 · Haz el mapa', '3 · Create the map'),
-             i18n.pick('El modelo usa los puntos verificados para hacer el mapa de tu zona.',
+             i18n.pick('El modelo utiliza los puntos verificados para generar un mapa de tu '
+                       'zona de estudio.',
                        'The model uses the verified points to create a map of your area.'),
-             i18n.pick('En cada píxel de 10 m de tu zona, el modelo da la probabilidad de '
-                       'que haya borreguil y su tipo.',
+             i18n.pick('Para cada píxel de 10 metros de tu zona de estudio, el modelo estima '
+                       'la probabilidad de presencia de pastos húmedos de alta montaña y predice '
+                       'su tipo.',
                        'For each 10-metre pixel in your area, the model provides a '
                        'probability of the presence of alpine wet meadows and its type.'))]
         for _k, (_col, (_paso, _tit, _txt)) in enumerate(zip(st.columns(3), _pasos_inicio)):
@@ -3935,7 +3941,8 @@ with pant_inicio:
                 f'href="{i18n.pick(OBSNEV_URL, OBSNEV_URL_EN)}" target="_blank" '
                 f'title="{i18n.pick(OBSNEV_TITULO, OBSNEV_TITULO_EN)}">'
                 # La autora (27-11-2026): la frase de más información, debajo de la pregunta.
-                + i18n.pick('¿Qué es un borreguil?<br>Más información en el Observatorio de '
+                + i18n.pick('¿Qué son los pastos húmedos de alta montaña?<br>Más información '
+                            'en el Observatorio de '
                             'Cambio Global de Sierra Nevada',
                             'What are alpine wet meadows?<br>More information at the Sierra '
                             'Nevada Global Change Observatory')
@@ -3949,15 +3956,15 @@ with pant_inicio:
                     with st.container(horizontal=True, vertical_alignment='center',
                                       gap='small', key='fila_ejemplo'):
                         st.button(
-                            i18n.pick('**Probar un ejemplo**\n\n20 puntos de Sierra Nevada · '
-                                      'un minuto',
+                            i18n.pick('**Prueba un ejemplo**\n\n20 puntos de Sierra Nevada · '
+                                      '1 minuto',
                                       '**Try an example**\n\n20 points from Sierra Nevada · '
                                       'one minute'),
                             key='probar_ejemplo', on_click=_pedir_ejemplo, type='primary')
                         ayuda_q('q_ejemplo',
                                 'Usa un modelo y datos ambientales (por ejemplo, de satélite) '
                                 'para analizar 20 puntos con presencia (12 puntos) y ausencia '
-                                '(8 puntos) de borreguil y obtener un mapa continuo de tu '
+                                '(8 puntos) de pastos húmedos de alta montaña y obtener un mapa continuo de tu '
                                 'zona.',
                                 'It uses a model and environmental (e.g. satellite) data to '
                                 'analyse 20 points with presence (12 points) and absence (8 '
@@ -3965,19 +3972,19 @@ with pant_inicio:
                                 'your area.')
                     if EJEMPLO_EXCEL.exists():
                         st.download_button(
-                            i18n.pick('Descargar la hoja de datos de puntos del ejemplo',
+                            i18n.pick('Descarga la tabla de datos de los puntos del ejemplo',
                                       'Download the point data sheet for the example'),
                             EJEMPLO_EXCEL.read_bytes(), file_name=EJEMPLO_EXCEL.name,
                             mime=_xlsx, key='bajar_ejemplo', type='tertiary')
                 st.button(
-                    i18n.pick('**Analizar mis puntos**\n\nKML, GeoJSON, Shapefile o CSV',
+                    i18n.pick('**Analiza mis puntos**\n\nKML, GeoJSON, Shapefile o CSV',
                               '**Analyse my points**\n\nKML, GeoJSON, Shapefile or CSV'),
                     key='analizar_mis_puntos', on_click=ir_a, args=('analizar',))
                 if PLANTILLA_EXCEL.exists():
                     with st.container(horizontal=True, vertical_alignment='center',
                                       gap='small'):
                         st.download_button(
-                            i18n.pick('Descargar la plantilla de datos de puntos',
+                            i18n.pick('Descarga la plantilla de datos de los puntos',
                                       'Download the point data template'),
                             PLANTILLA_EXCEL.read_bytes(), file_name=PLANTILLA_EXCEL.name,
                             mime=_xlsx, key='bajar_plantilla', type='tertiary')

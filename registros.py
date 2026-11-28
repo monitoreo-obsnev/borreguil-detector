@@ -484,7 +484,7 @@ def recoger(version='', ocultar=(), donde=None, max_bytes=LOGS_BYTES):
     que diría quién es (ocultar_datos, con OCULTAR)."""
     paquetes = [f'{n} {v}' for n, v in (('earthengine-api', _paquete('earthengine-api')),
                                          ('streamlit', _paquete('streamlit'))) if v]
-    cabeza = [f'Registros de Borreguil · Wet Meadow Finder {version}'.rstrip(),
+    cabeza = [f'Registros de Borreguil - Alpine wet meadows finder {version}'.rstrip(),
               f'Recogidos: {_ahora()}',
               f'Sistema: {platform.platform()}; Python {platform.python_version()}'
               + ''.join(f'; {p}' for p in paquetes)]

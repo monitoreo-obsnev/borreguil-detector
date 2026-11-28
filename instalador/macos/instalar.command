@@ -1,5 +1,5 @@
 #!/bin/bash
-# Instalador de Borreguil · Wet Meadow Finder para macOS (27-11-2026: como los de MonitorEO y eHabitat+). Se pega en
+# Instalador de Borreguil - Alpine wet meadows finder para macOS (27-11-2026: como los de MonitorEO y eHabitat+). Se pega en
 # la app Terminal:
 #
 #   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/monitoreo-obsnev/borreguil-detector/main/instalador/macos/instalar.command)"
@@ -55,7 +55,7 @@ main() {
 	}
 	trap 'fail "la instalación se ha parado (lo de arriba dice dónde)."' ERR
 
-	echo "Instalador de Borreguil · Wet Meadow Finder"
+	echo "Instalador de Borreguil - Alpine wet meadows finder"
 	echo "==========================================="
 	echo
 	echo "Instala en $DIR, sin permisos de administrador, lo que necesita la app: Python y sus librerías"

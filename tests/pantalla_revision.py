@@ -3464,7 +3464,7 @@ def guion_sin_puntos(lang):
     t0 = at.tabs[0]                    # la pantalla de inicio (sin el panel lateral)
     inicio = ' '.join(str(x.value) for x in
                       list(t0.markdown) + list(t0.info) + list(t0.caption))
-    comprobar(T('Encuentra los borreguiles de tu zona',
+    comprobar(T('Identifica y mapea los pastos húmedos de alta montaña',
                 'Find the alpine wet meadows in your area') in inicio
               and T('obsnev.es/ecosistemas-borreguiles/',
                     'obsnev.es/en/ecosistemas-borreguiles/') in inicio
@@ -3472,10 +3472,10 @@ def guion_sin_puntos(lang):
                   ('1 · Prepara tu análisis', '1 · Set your analysis'),
                   ('2 · Revisa los puntos de entrenamiento', '2 · Review the training points'),
                   ('3 · Haz el mapa', '3 · Create the map')))
-              and T('Zonas o puntos, modelo y datos', 'Areas/points, model and data') in inicio
-              and T('Confirma o corrige a la vista', 'Visually confirm or correct') in inicio
-              and T('no estoy seguro/a', 'not sure') in inicio
-              and T('En cada píxel de 10 m de tu zona',
+              and T('Selecciona las áreas o puntos, el modelo y los datos', 'Areas/points, model and data') in inicio
+              and T('Confirma o corrige visualmente', 'Visually confirm or correct') in inicio
+              and T('no estoy seguro', 'not sure') in inicio
+              and T('Para cada píxel de 10 metros de tu zona de estudio',
                     'For each 10-metre pixel in your area') in inicio
               and not any(x in inicio for x in ('presence-only', 'GroupKFold', 'Backend',
                                                 'inputs', 'MPC', 'rásters', 'rasters'))
@@ -3485,8 +3485,8 @@ def guion_sin_puntos(lang):
               'con lo que acierta con y sin radar, y sin el recuadro del KML', inicio[:200])
     b_ej = boton(at, 'probar_ejemplo')
     comprobar(b_ej is not None
-              and b_ej.label == T('**Probar un ejemplo**\n\n20 puntos de Sierra '
-                                  'Nevada · un minuto',
+              and b_ej.label == T('**Prueba un ejemplo**\n\n20 puntos de Sierra '
+                                  'Nevada · 1 minuto',
                                   '**Try an example**\n\n20 points from Sierra Nevada · '
                                   'one minute'),
               'y un botón para probar con los 20 puntos de ejemplo')
@@ -3598,7 +3598,7 @@ def guion_sin_puntos(lang):
         T('Puntos al azar', 'Random points'),
         T('Al azar, separados una distancia mínima', 'Random but separated by a minimum distance'),
         T('Al azar, estratificados por altitud', 'Random but stratified by altitude'),
-        T('Al azar por clase de probabilidad', 'Random by probability class')],
+        T('Al azar, por clase de probabilidad', 'Random by probability class')],
               'las formas de repartir, en su orden (la de la capa: «por clase de '
               'probabilidad»)', str(est.options))
     est.set_value('cuartiles')
