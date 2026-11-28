@@ -941,7 +941,7 @@ def render_docs(con_sugerencias=True):
         '(con quién revisa, su perfil y la certidumbre) y revisa su tipo; en **Mapa de '
         'los puntos** puedes añadir puntos pinchando. Descarga Excel, CSV o '
         '`puntos.geojson` en **Descargas**.\n'
-        '5. *(Opcional)* si tienes puntos de campo de tu zona, marca **«Sumar mis puntos a los del modelo y reentrenarlo»**: '
+        '5. *(Opcional)* si tienes puntos de campo de tu zona, marca **«Añadir mis puntos a los del modelo y volver a entrenarlo»**: '
         'la app vuelve a entrenar el modelo con sus 769 puntos de Sierra Nevada y los '
         'tuyos juntos, y te dice cuánto acierta en tus puntos.\n'
         f'6. En **3 · Hacer el mapa**, con tus puntos revisados (mínimo unos {_mn}, con '
@@ -1214,7 +1214,7 @@ def mostrar_modelo(info, threshold, casilla=None):
                'counts.' if _q else '')))
     elif modo == 'pretrained' and motivo == 'sin_puntos':
         st.warning(titulo + '. ' + pick(
-            'Has marcado «Sumar mis puntos a los del modelo», pero ninguno de tus puntos '
+            'Has marcado «Añadir mis puntos a los del modelo», pero ninguno de tus puntos '
             'dice si es borreguil o no: se usa el modelo tal cual. Verifica puntos en la '
             'pantalla «2 · Revisar» o añádelos pinchando en el mapa de Resultados.',
             'You ticked "Add my points to the model\'s", but none of your points says '
@@ -1249,14 +1249,14 @@ def mostrar_modelo(info, threshold, casilla=None):
             # La casilla está marcada pero el modelo aún no se ha reentrenado: el
             # botón para hacerlo va justo debajo.
             st.markdown(pick(
-                f'El de partida ({_z_es}). Has marcado «Sumar mis puntos a los del modelo y '
-                'reentrenarlo»: pulsa el botón de abajo para reentrenarlo ahora.',
+                f'El de partida ({_z_es}). Has marcado «Añadir mis puntos a los del modelo y '
+                'volver a entrenarlo»: pulsa el botón de abajo para reentrenarlo ahora.',
                 f'The starting one ({_z_en}). You ticked "Add my points to the model\'s and '
                 'retrain it": press the button below to retrain it now.'))
         elif casilla == 'sin_puntos':
             st.markdown(pick(
-                f'El de partida ({_z_es}). Has marcado «Sumar mis puntos a los del modelo y '
-                'reentrenarlo», pero ninguno de tus puntos dice todavía si es borreguil o '
+                f'El de partida ({_z_es}). Has marcado «Añadir mis puntos a los del modelo y '
+                'volver a entrenarlo», pero ninguno de tus puntos dice todavía si es borreguil o '
                 'no. Revisa puntos en «2 · Revisar» o añádelos pinchando en el mapa.',
                 f'The starting one ({_z_en}). You ticked "Add my points to the model\'s and '
                 'retrain it", but none of your points says yet whether it is a borreguil. '
@@ -2048,8 +2048,9 @@ label[data-baseweb="checkbox"]:has(input:checked)>span{background-color:#7CC496;
 .st-key-sugerencias_panel summary p{font-size:14px;font-weight:600}
 .st-key-tit_principal h3{font-size:22px !important;font-weight:700 !important;padding:0 !important}
 .st-key-tit_principal [data-testid="stCaptionContainer"] p{font-size:13px;color:#AEB6BE}
-[data-testid="stColumn"]:has(.st-key-analizar) [data-testid="stCaptionContainer"]{
-  text-align:center}
+.st-key-boton_analizar{margin-top:6px}
+.st-key-boton_analizar button{min-height:54px}
+.st-key-boton_analizar button p{font-size:16px;font-weight:700}
 .st-key-origen_puntos [role="radiogroup"],.st-key-zona_modo [role="radiogroup"],
 .st-key-imagen_ambito [role="radiogroup"]{display:grid !important;
   grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -2556,7 +2557,7 @@ _CSS_ANALIZAR_ANCHO = '''
 .st-key-panel_analizar{border-radius:0 !important;border:0 !important;
   border-right:1px solid #534B4E !important;padding:22px !important;
   min-height:calc(100vh - 62px)}
-[data-testid="stColumn"]:has(.st-key-analizar){padding:24px}
+[data-testid="stColumn"]:has(.st-key-tit_principal){padding:24px}
 '''
 
 
@@ -3009,8 +3010,8 @@ with col_panel, st.container(key='panel_analizar'):
             value=False, disabled=(f_truth is None),
             help=i18n.pick(
                 'Con la casilla o sin ella, tus puntos ya verificados sirven igual para medir '
-                'cuánto acierta el modelo (y, si marcas «Sumar mis puntos a los del modelo y '
-                'reentrenarlo», para entrenarlo). Marcada, además no salen en el mapa, la '
+                'cuánto acierta el modelo (y, si marcas «Añadir mis puntos a los del modelo y '
+                'volver a entrenarlo», para entrenarlo). Marcada, además no salen en el mapa, la '
                 'tabla ni las descargas: solo verás los puntos que estás revisando. Útil '
                 'cuando subes muchos borreguiles verificados y no quieres que tapen el '
                 'resultado. Los puntos tuyos que caigan a menos de 20 m de uno verificado sí '
@@ -3034,7 +3035,7 @@ with col_panel, st.container(key='panel_analizar'):
     with st.container(key='seccion_modelo'):
         # Como en la demo: la «?» en el título, el desplegable con el nombre de cada modelo
         # y una sola nota gris con el enlace a «Qué modelo elegir».
-        st.subheader(i18n.pick('Modelos para obtener puntos candidatos de entrenamiento',
+        st.subheader(i18n.pick('Modelos para obtener puntos de entrenamiento candidatos',
                                 'Models to get candidate training points'), help=i18n.pick(
             'Es el que da la probabilidad de cada punto, aunque tus puntos traigan etiquetas de '
             'campo (con ellas la app mide cuánto acierta). Para entrenar además uno con tus '
@@ -3064,9 +3065,10 @@ with col_panel, st.container(key='panel_analizar'):
                 with st.container(horizontal=True, vertical_alignment='center',
                                   key='nota_modelo'):
                     st.caption(i18n.pick(
-                        (f'Entrenado con {_n_m} puntos de {_zona_m}. ' if _n_m else
-                         f'Entrenado en {_zona_m}. ')
-                        + 'En otra zona, revisa los puntos antes de fiarte.'
+                        (f'Modelo entrenado con {_n_m} puntos de {_zona_m}. ' if _n_m else
+                         f'Modelo entrenado en {_zona_m}. ')
+                        + 'Si lo aplicas en otra zona, revisa los puntos antes de dar por '
+                          'válidas las predicciones.'
                         + ('' if _sr is None else ' Con Microsoft Planetary Computer se usa su versión '
                            'entrenada sin radar' + ('' if _auc_sr is None else
                                                     f' (AUC {_n3(_auc_sr)})') + '.'),
@@ -3079,7 +3081,7 @@ with col_panel, st.container(key='panel_analizar'):
                     # Abre la wiki, en el apartado «Qué modelo elegir» (la autora, 27-11-2026)
                     with st.container(key='ir_modelos'):
                         st.markdown(
-                            '[' + i18n.pick('Qué modelo elegir', 'Which model to choose')
+                            '[' + i18n.pick('¿Qué modelo elegir?', 'Which model to choose')
                             + ' ↗](' + i18n.pick(WIKI_URL + '#qué-modelo-elegir',
                                                   WIKI_URL + '/English#which-model-to-choose')
                             + ')')
@@ -3106,7 +3108,7 @@ with col_panel, st.container(key='panel_analizar'):
         # etiquetas de campo (con ellas se mide cuánto acierta). Entrenar uno propio es
         # una decisión de quien usa la app, no algo que pase solo al subir 15 borreguiles.
         st.checkbox(
-            i18n.pick('Sumar mis puntos a los del modelo y reentrenarlo', "Add my points to the model's and retrain it"),
+            i18n.pick('Añadir mis puntos a los del modelo y volver a entrenarlo', "Add my points to the model's and retrain it"),
             value=False, key='entrenar_propio',
             help=i18n.pick(
                 'Sin marcar, la app usa el modelo de arriba tal cual y, si tus puntos traen '
@@ -3127,7 +3129,7 @@ with col_panel, st.container(key='panel_analizar'):
         # El umbral es el corte del modelo: va en esta tarjeta, «Modelo» (27-11-2026).
         st.html('<hr class="separador">')
         with st.container(key='titb_umbral'):
-            st.markdown(i18n.pick('Umbral para BORREGUIL', 'Threshold for BORREGUIL'),
+            st.markdown(i18n.pick('Umbral de presencia de borreguil', 'Threshold for BORREGUIL'),
                         help=i18n.pick(
                 'Para qué: el modelo da a cada punto una probabilidad de ser borreguil, de 0 a '
                 '1, y el umbral es el corte. Por encima, el punto sale como borreguil; por '
@@ -3163,20 +3165,19 @@ with col_panel, st.container(key='panel_analizar'):
                 '− 1). With presences only, the cut that captures 90 % of the known '
                 'borreguiles. If there are not enough field points, it uses Otsu.'))
         st.caption(i18n.pick(
-            'El modelo da a cada punto una probabilidad de ser borreguil, de 0 a 1. El umbral '
-            'es el corte: por encima, el punto sale como borreguil (verde); por debajo, como no '
-            'borreguil (rojo). Decide los recuentos y el acierto, pero no cambia las '
-            'probabilidades.',
+            'El modelo asigna a cada punto una probabilidad de presencia de borreguil entre 0 '
+            'y 1.\n\nEl umbral determina el valor a partir del cual un punto se clasifica como '
+            'presencia de borreguil (verde) o ausencia (rojo).',
             'The model gives each point a probability of being borreguil, from 0 to 1. The '
             'threshold is the cut: above it, the point comes out as borreguil (green); below '
             'it, as not borreguil (red). It decides the counts and the accuracy, but it does '
             'not change the probabilities.'))
         _umbrales = {'Automático · Otsu': i18n.pick('Automático (Otsu)', 'Automatic (Otsu)'),
-                     'Manual (deslizador)': i18n.pick('A mano', 'By hand'),
-                     'Automático · verdad-terreno': i18n.pick('Según mis puntos',
+                     'Manual (deslizador)': i18n.pick('Manual', 'By hand'),
+                     'Automático · verdad-terreno': i18n.pick('A partir de mis puntos',
                                                               'From my points')}
         thr_mode = st.radio(
-            i18n.pick('Umbral para BORREGUIL', 'Threshold for BORREGUIL'), list(_umbrales),
+            i18n.pick('Umbral de presencia de borreguil', 'Threshold for BORREGUIL'), list(_umbrales),
             index=0, horizontal=True, format_func=_umbrales.get, key='modo_umbral',
             label_visibility='collapsed')
         if thr_mode.startswith('Manual'):
@@ -3424,6 +3425,9 @@ with col_panel, st.container(key='panel_analizar'):
                 'filled with a typical Sierra Nevada value and its probability is **less '
                 'reliable**. Use it to propose points and review them.'))
         skip_s2 = False
+    # El botón de analizar, al final del panel, después de todas las opciones (la autora,
+    # 28-11-2026). Se rellena más abajo, cuando ya se sabe si se puede analizar.
+    _hueco_analizar = st.container(key='boton_analizar')
     # Como en la demo: se despliega dentro del panel (▸ / ▾), no flota.
     with st.expander(i18n.pick('💬 Sugerir un cambio o informar de un error',
                                '💬 Suggest a change or report an error'),
@@ -3555,17 +3559,71 @@ def _zoom_para(caja, ancho=800, alto=680, margen=60):
     return int(max(3, min(16, math.floor(z))))
 
 
-def _mapa_previo(puntos, rectangulo):
+@st.cache_data(show_spinner=False, ttl=3600)
+def _zona_previa(wdpa, nombre, partes):
+    """La zona elegida, buscada antes de analizar para verla en el mapa: el código WDPA
+    (en Earth Engine con la cuenta compartida de MonitorEO), el nombre del área protegida
+    (OpenStreetMap) o el polígono subido (`partes`: sus ficheros, (nombre, bytes)).
+    Devuelve (GeoJSON simplificado, (oeste, sur, este, norte), nombre) o (None, None, '')
+    si no se encuentra."""
+    import study_area as sa
+    from shapely.geometry import mapping
+    geom, info = None, None
+    carpeta = None
+    try:
+        if partes:
+            carpeta = Path(tempfile.mkdtemp(prefix='zona_'))
+            rutas = []
+            for n, d in partes:
+                r = carpeta / Path(n).name
+                r.write_bytes(d)
+                rutas.append(r)
+            principal = next((r for e in ('.shp', '.zip', '.gpkg', '.geojson', '.json', '.kml')
+                              for r in rutas if r.suffix.lower() == e), rutas[0])
+            geom, info = sa.resolve(str(principal))
+        elif wdpa:
+            usar_ee = False
+            try:
+                import gee_backend as geb
+                usar_ee = geb.initialize()[0]
+            except Exception:                           # noqa: BLE001
+                usar_ee = False
+            geom, info = sa.resolve(None, wdpa.strip(), None, wdpa_token=None, use_gee=usar_ee)
+        elif nombre:
+            geom, info = sa.resolve(None, None, nombre.strip())
+    except Exception:                                   # noqa: BLE001
+        geom = None
+    finally:
+        if carpeta is not None:
+            shutil.rmtree(carpeta, ignore_errors=True)
+    if geom is not None and geom.geom_type == 'GeometryCollection':
+        # Earth Engine puede devolver una colección (polígonos y alguna línea suelta): el
+        # mapa solo sabe pintar polígonos, así que se quedan solo ellos.
+        from shapely.ops import unary_union
+        geom = unary_union([g for g in geom.geoms
+                            if g.geom_type in ('Polygon', 'MultiPolygon')])
+    if geom is None or geom.is_empty:
+        return None, None, ''
+    return (mapping(geom.simplify(0.0003, preserve_topology=True)), tuple(geom.bounds),
+            (info or {}).get('name', ''))
+
+
+def _mapa_previo(puntos, rectangulo, zona=None, caja_zona=None):
     """El mapa de «Tus puntos y tu zona»: la ortofoto de fondo (ESRI de entrada; PNOA,
     Google u OpenStreetMap en el panel «Capas»), tus puntos (círculos blancos), tu zona si es
     el rectángulo que los rodea (verde, discontinuo) y la leyenda dentro del mapa. Sin
-    puntos, Sierra Nevada."""
+    puntos, Sierra Nevada. `zona`: la zona elegida (GeoJSON) y `caja_zona`, su caja: se
+    dibuja y el mapa se acerca a ella y a los puntos."""
     if puntos:
         lons = [p[0] for p in puntos]
         lats = [p[1] for p in puntos]
         caja = (min(lons), min(lats), max(lons), max(lats))
     else:
         caja = SIERRA_NEVADA_CAJA
+    if zona and caja_zona:
+        caja = (caja_zona if not puntos else
+                (min(caja[0], caja_zona[0]), min(caja[1], caja_zona[1]),
+                 max(caja[2], caja_zona[2]), max(caja[3], caja_zona[3])))
     # El zoom se calcula aquí y no con fit_bounds: el mapa se dibuja también con la
     # pantalla escondida (tamaño 0), y fit_bounds lo dejaría en el zoom máximo.
     m = folium.Map(location=[(caja[1] + caja[3]) / 2, (caja[0] + caja[2]) / 2],
@@ -3590,6 +3648,10 @@ def _mapa_previo(puntos, rectangulo):
         folium.Rectangle([[caja[1], caja[0]], [caja[3], caja[2]]],
                          color='#7CC496', weight=2.5, dash_array='8 6', fill=True,
                          fill_color='#7CC496', fill_opacity=0.07).add_to(m)
+    if zona:
+        folium.GeoJson(zona, control=False, style_function=lambda _f: {
+            'color': '#7CC496', 'weight': 2.5, 'dashArray': '8 6', 'fill': True,
+            'fillColor': '#7CC496', 'fillOpacity': 0.07}).add_to(m)
     for lon, lat in puntos:
         folium.CircleMarker([lat, lon], radius=6, color='#221F20', weight=2,
                             fill=True, fill_color='#ECEFF1', fill_opacity=1).add_to(m)
@@ -3600,9 +3662,9 @@ def _mapa_previo(puntos, rectangulo):
     if puntos:
         filas.append('<span>○ ' + i18n.pick(f'Tus {len(puntos)} puntos',
                                             f'Your {len(puntos)} points') + '</span>')
-        if rectangulo:
-            filas.append('<span style="color:#7CC496">┄ ' + i18n.pick('Tu zona de estudio', 'Your area')
-                         + '</span>')
+    if zona or (puntos and rectangulo):
+        filas.append('<span style="color:#7CC496">┄ ' + i18n.pick('Tu zona de estudio', 'Your area')
+                     + '</span>')
     if filas:                       # sin puntos, sin leyenda
         m.get_root().html.add_child(folium.Element(
             '<div style="position:fixed;left:16px;bottom:16px;z-index:9999;'
@@ -3628,47 +3690,46 @@ with col_principal:
             _sin_crs_subida(tuple((f.name, f.getvalue()) for f in _fs), i18n.get_lang())
             for _fs in (f_input, f_truth) if _fs):
         can_run = False
-    c_tit, c_boton = st.columns([3, 2], vertical_alignment='center')
-    with c_tit, st.container(key='tit_principal'):
+    with st.container(key='tit_principal'):
         st.subheader(i18n.pick('Tus puntos y tu zona', 'Your points and your area'))
-        st.caption(i18n.pick('Comprueba que todo cae donde esperas y pulsa Analizar.',
+        st.caption(i18n.pick('Comprueba que todo cae donde esperas y pulsa «Analizar y ver '
+                             'los resultados», al final del panel.',
                              'Check that everything falls where you expect and press '
                              'Analyse.'))
-    with c_boton:
+    with _hueco_analizar:
         run_btn = st.button(
-            (i18n.pick(f'Analizar los {_n_analizar} puntos',
-                       f'Analyse the {_n_analizar} points') if _n_analizar else
-             i18n.pick('Analizar', 'Analyse')),
+            i18n.pick('Analizar y ver los resultados',
+                      f'Analyse the {_n_analizar} points' if _n_analizar else 'Analyse'),
             type='primary', disabled=not can_run, key='analizar', width='stretch')
-        if backend != 'gee':
-            _txt_cuenta = i18n.pick('Microsoft Planetary Computer: más lento y sin radar.',
-                                    'Microsoft Planetary Computer: slower and without radar.')
-        elif gee_project:
-            _txt_cuenta = i18n.pick('Earth Engine con tu proyecto.',
-                                    'Earth Engine with your project.')
-        else:
-            _uso_v = _uso_cuenta_compartida()
-            _txt_cuenta = (i18n.pick(
-                f"Earth Engine con la cuenta compartida: te quedan "
-                f"{_num(_uso_v['left_hours'])} h este mes.",
-                f"Earth Engine with the shared account: {_num(_uso_v['left_hours'])} h "
-                'left this month.')
-                if _uso_v and _uso_v.get('left_hours') is not None else
-                i18n.pick('Earth Engine con la cuenta compartida.',
-                          'Earth Engine with the shared account.'))
-        if _n_analizar:
-            # Unos 3 s por punto con Earth Engine (20 puntos, un minuto); el triple sin él.
-            _min = max(1, round(_n_analizar * (3 if backend == 'gee' else 9) / 60))
-            _txt_cuenta += ' ' + (i18n.pick('Alrededor de un minuto.', 'About a minute.')
-                                  if _min <= 1 else
-                                  i18n.pick(f'Unos {_min} minutos.',
-                                            f'About {_min} minutes.'))
-        st.caption(_txt_cuenta)
+        # (Sin la línea de las horas de Earth Engine y del tiempo que tardará: la autora,
+        # 28-11-2026, «quítala».)
     # El mapa siempre a la vista, como en la demo (sin puntos, Sierra Nevada). Solo se
     # dibuja con esta pantalla delante: escondido, Leaflet se queda sin tamaño y no se ve.
+    # La zona se busca y se dibuja ya, antes de analizar (la autora, 28-11-2026), para
+    # comprobar que es la buena antes de esperar al análisis.
+    _zona_gj, _zona_caja, _zona_buscada = None, None, False
+    if PANTALLA == 'analizar' and not area_mode.startswith('⨯'):
+        _partes_zona = (tuple((f.name, f.getvalue()) for f in f_area)
+                        if f_area and not _zona_sin_crs else ())
+        if _partes_zona or (wdpa_id or '').strip() or (pa_name or '').strip():
+            _zona_buscada = True
+            _zona_gj, _zona_caja, _ = _zona_previa((wdpa_id or '').strip(),
+                                                   (pa_name or '').strip(), _partes_zona)
     if PANTALLA == 'analizar':
-        st_folium(_mapa_previo(tuple(_pts_vista), area_mode.startswith('⨯')), height=680,
-                  use_container_width=True, returned_objects=[], key='mapa_previo')
+        # La clave cambia con la zona y los puntos: si no, el mapa no se vuelve a dibujar.
+        _firma_mapa = abs(hash((len(_pts_vista), tuple(_pts_vista[:3]),
+                                area_mode.startswith('⨯'), _zona_caja))) % 10 ** 8
+        st_folium(_mapa_previo(tuple(_pts_vista), area_mode.startswith('⨯'),
+                               _zona_gj, _zona_caja), height=680,
+                  use_container_width=True, returned_objects=[],
+                  key=f'mapa_previo_{_firma_mapa}')
+    if _zona_buscada and _zona_gj is None:
+        st.warning(i18n.pick(
+            'No se ha encontrado esa zona. Revisa el nombre o el código WDPA, o sube su '
+            'polígono; si analizas así, se usará el rectángulo que engloba tus puntos.',
+            'That area was not found. Check the name or the WDPA code, or upload its '
+            'polygon; if you analyse like this, the rectangle around your points will be '
+            'used.'))
     if input_mode.startswith('🎲'):
         st.caption(i18n.pick('Los puntos se generan al analizar, dentro de tu zona.',
                              'The points are generated when analysing, inside your area.'))
@@ -3679,9 +3740,9 @@ with col_principal:
                              'Upload your points file under "Your points", on the left, or '
                              'generate them at random in your area. To try without anything, '
                              'use the example on the start screen.'))
-    elif _pts_vista and not area_mode.startswith('⨯'):
-        st.caption(i18n.pick('Tu zona se dibuja al analizar.',
-                             'Your area is drawn when analysing.'))
+    elif _pts_vista and not area_mode.startswith('⨯') and not _zona_buscada:
+        st.caption(i18n.pick('Elige tu zona a la izquierda para verla aquí.',
+                             'Choose your area on the left to see it here.'))
 
 # ============================================================
 # HELP / WELCOME
@@ -5192,12 +5253,14 @@ with pant_resultados:
         def _sin_prediccion(r):
             return 'SIN PRED' in str(r.get('decision', 'SIN PREDICCIÓN'))
 
-        def _add_points(fmap, pts, highlight_id=None, radius=7, hueco=False):
+        def _add_points(fmap, pts, highlight_id=None, radius=7, hueco=False, globo=True):
             # Como en la demo (27-11-2026): círculos de 18 px, relleno y borde del color
             # del punto (verde si es borreguil, rojo si no; gris sin predicción), con un
             # halo oscuro para que se vean sobre la ortofoto, y el globo oscuro.
             # hueco=True: el punto resaltado se dibuja sin relleno, para que el
             # marcador no tape justo el terreno que hay que mirar.
+            # globo=False: sin globo; al pasar el ratón, el nombre y la probabilidad (el
+            # mapa general de «2 · Revisar», donde pinchar abre el punto debajo).
             _rotulos = i18n.pick(
                 {'tipo': 'Tipo', 'revisado': 'revisado',
                  'variables': 'Las que más pesan en el modelo',
@@ -5232,10 +5295,22 @@ with pant_resultados:
                                     weight=2, opacity=0.45, fill=False,
                                     interactive=False).add_to(fmap)
                 _relleno = not (hueco and is_sel)
+                if globo:
+                    _extra = {'popup': folium.Popup(popup, max_width=280)}
+                else:
+                    try:
+                        _p_r = float(r.get('rf_proba'))
+                        _p_r = None if _p_r != _p_r else _p_r
+                    except (TypeError, ValueError):
+                        _p_r = None
+                    import html as _html_pop
+                    _extra = {'tooltip': _html_pop.escape(
+                        str(_nombre_pop.get(str(r.get('ID'))) or ''))
+                        + ('' if _p_r is None else f' · {_p_r * 100:.0f} %')}
                 folium.CircleMarker([r['lat'], r['lon']], radius=radius, color=color,
                                     weight=3, fill=True, fill_color=color,
                                     fill_opacity=1.0 if _relleno else 0.0,
-                                    popup=folium.Popup(popup, max_width=280)).add_to(fmap)
+                                    **_extra).add_to(fmap)
 
         def _add_legend(fmap, rows=None):
             """La leyenda (abajo a la izquierda), con los mismos colores que los puntos:
@@ -5267,6 +5342,13 @@ with pant_resultados:
                 '.leaflet-popup-content{margin:10px 12px;font-family:Inter,system-ui,'
                 'sans-serif}'
                 '.leaflet-popup-tip{background:#2E2A2B;border:1px solid #60575A}'
+                '.leaflet-tooltip{background:rgba(46,42,43,.96);color:#ECEFF1;'
+                'border:1px solid #60575A;border-radius:8px;font:600 12px Inter,system-ui,'
+                'sans-serif;box-shadow:0 4px 12px rgba(0,0,0,.35)}'
+                '.leaflet-tooltip-top:before{border-top-color:#60575A}'
+                '.leaflet-tooltip-left:before{border-left-color:#60575A}'
+                '.leaflet-tooltip-right:before{border-right-color:#60575A}'
+                '.leaflet-tooltip-bottom:before{border-bottom-color:#60575A}'
                 '.leaflet-container a.leaflet-popup-close-button{color:#AEB6BE;'
                 'font:700 15px Inter,sans-serif;top:8px;right:8px}'
                 '.leaflet-container a.leaflet-popup-close-button:hover{color:#ECEFF1}'
@@ -5878,8 +5960,9 @@ with pant_resultados:
 .rev-titulo h1{margin:0;padding:0;font-family:Montserrat,Inter,sans-serif;font-size:26px;
   font-weight:700;line-height:1.2;color:#F5F7F8;overflow-wrap:anywhere}
 .rev-titulo span{font-size:14px;color:#AEB6BE}
-.st-key-rev_mapa iframe{border-radius:18px;border:1px solid #403A3C!important;
-  background:#2E2A2B;display:block}
+.st-key-rev_mapa iframe,.st-key-rev_general iframe{border-radius:18px;
+  border:1px solid #403A3C!important;background:#2E2A2B;display:block}
+.st-key-rev_general{gap:8px;margin-bottom:10px}
 details.rev-amarillo,details.rev-perfil{border-radius:12px;overflow:hidden}
 details.rev-amarillo{border:1px solid #5C5320;background:#221F12}
 details.rev-perfil{border:1px solid #403A3C;background:#2E2A2B}
@@ -6106,12 +6189,36 @@ details.rev-leer>summary:hover{color:#CFEBD9}
                 _aviso_rev = st.session_state.pop('_rev_msg', None)
                 if _aviso_rev:
                     st.success(_aviso_rev)
-                _rev_punto = st.container(key='rev_punto')   # arriba, el punto que se revisa
+                # arriba del todo, el mapa general: todos los puntos y la zona
+                _rev_general = st.container(key='rev_general')
+                _rev_punto = st.container(key='rev_punto')   # luego, el punto que se revisa
                 _rev_tabla = st.container(key='rev_tabla')   # debajo, todos los puntos
             # --- El punto (o los puntos) que se revisa: lo marcado en la tabla o, si no hay
             # nada marcado, el abierto en la lista (al entrar, el primero de la lista). Lo
             # marcado se lee del estado de la tabla antes de dibujarla, para que su fila
             # salga resaltada (la demo).
+            # Un punto pinchado en el mapa general: se abre para revisarlo y la tabla deja
+            # de mandar. Cada clic se usa una sola vez (el mapa guarda el último).
+            _gen = st.session_state.get('rev_general_mapa')
+            _obj_gen = _gen.get('last_object_clicked') if isinstance(_gen, dict) else None
+            if _obj_gen and _obj_gen.get('lat') is not None:
+                _c_gen = (round(float(_obj_gen['lat']), 7), round(float(_obj_gen['lng']), 7))
+                if _c_gen != st.session_state.get('_rev_clic_general'):
+                    st.session_state['_rev_clic_general'] = _c_gen
+                    _i_gen, _d_gen = None, 1e18
+                    for _i, _r in enumerate(rows):
+                        try:
+                            _d = ((float(_r['lat']) - _c_gen[0]) ** 2
+                                  + (float(_r['lon']) - _c_gen[1]) ** 2)
+                        except (KeyError, TypeError, ValueError):
+                            continue
+                        if _d < _d_gen:
+                            _i_gen, _d_gen = _i, _d
+                    if _i_gen is not None and _d_gen < 0.00045 ** 2:   # unos 50 m
+                        st.session_state['rev_punto_id'] = _ids[_i_gen]
+                        st.session_state['results_table'] = {
+                            'selection': {'rows': [], 'columns': [], 'cells': []}}
+                        st.session_state.sel_point = None
             sel_rows = _table_sel_rows()
             _sel_ok = [i for i in sel_rows if isinstance(i, int) and 0 <= i < len(rows)]
             _de_tabla = bool(_sel_ok)
@@ -6128,6 +6235,46 @@ details.rev-leer>summary:hover{color:#CFEBD9}
             sel_ids = [rows[i].get('ID') for i in _sel_ok]
             _n = len(sel_ids)
             sel = dict(rows[idx])
+
+            # --- El mapa general (la autora, 28-11-2026: Domingo lo quería aquí): todos los
+            # puntos, verdes o rojos, y la zona de estudio, con la ortofoto de fondo. Solo
+            # se dibuja en esta pantalla.
+            if PANTALLA == 'revisar':
+                with _rev_general:
+                    st.html('<div class="rev-tabla-tit"><h2>'
+                            + (i18n.pick('Todos los puntos y tu zona',
+                                         'All the points and your area') if sg is not None
+                               else i18n.pick('Mapa de todos los puntos',
+                                              'Map of all the points')) + '</h2><span>'
+                            + i18n.pick('Pincha en un punto para abrirlo y revisarlo. El aro '
+                                        'blanco marca el que tienes abierto.',
+                                        'Click a point to open it and review it. The white '
+                                        'ring marks the one you have open.')
+                            + '</span></div>')
+                    _lats_g = [float(r['lat']) for r in rows if r.get('lat') is not None]
+                    _lons_g = [float(r['lon']) for r in rows if r.get('lon') is not None]
+                    _caja_g = [min(_lons_g), min(_lats_g), max(_lons_g), max(_lats_g)]
+                    if sg is not None:
+                        _b = sg.bounds
+                        _caja_g = [min(_caja_g[0], _b[0]), min(_caja_g[1], _b[1]),
+                                   max(_caja_g[2], _b[2]), max(_caja_g[3], _b[3])]
+                    mg = _base_map([(_caja_g[1] + _caja_g[3]) / 2,
+                                    (_caja_g[0] + _caja_g[2]) / 2], 12, ortofoto=True)
+                    _add_points(mg, rows, radius=6, globo=False)
+                    _add_legend(mg, rows)
+                    folium.LayerControl(collapsed=True).add_to(mg)
+                    mg.fit_bounds([[_caja_g[1], _caja_g[0]], [_caja_g[3], _caja_g[2]]],
+                                  padding=(24, 24))
+                    # el aro blanco del punto abierto: cambia sin volver a dibujar el mapa
+                    _g_abierto = folium.FeatureGroup(name=i18n.pick('Punto abierto',
+                                                                    'Open point'))
+                    if sel.get('lat') is not None:
+                        folium.CircleMarker([sel['lat'], sel['lon']], radius=12,
+                                            color='#FFFFFF', weight=4, fill=False,
+                                            interactive=False).add_to(_g_abierto)
+                    st_folium(mg, width=None, height=360, feature_group_to_add=_g_abierto,
+                              returned_objects=['last_object_clicked'],
+                              key='rev_general_mapa')
 
             with _rev_tabla:
                 st.html('<div class="rev-tabla-tit"><h2>'
@@ -6835,8 +6982,8 @@ details.rev-leer>summary:hover{color:#CFEBD9}
                             type='primary', key='rev_guardar', width='stretch')
                         ayuda_q('q_rev_guardar',
                                 'Guarda a la vez si es borreguil, la certidumbre, quién revisa '
-                                'y el tipo. Si has marcado «Sumar mis puntos a los del modelo y '
-                                'reentrenarlo» (en el panel de Analizar, en «Modelo») y cambia '
+                                'y el tipo. Si has marcado «Añadir mis puntos a los del modelo y '
+                                'volver a entrenarlo» (en el panel de Analizar, en «Modelo») y cambia '
                                 'el sí o el no, el modelo se reentrena.',
                                 'Saves at once whether it is a borreguil, the certainty, who '
                                 'reviews and the type. If you ticked "Add my points to the '
